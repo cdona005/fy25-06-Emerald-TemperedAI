@@ -1,74 +1,121 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import logo from "./assets/EDUSENSE.svg"; 
-//**Currently I only have the login checking localStorage (this is temporary)
-// This in the future will call to Djano RestAPI
-// SO that we are verifying with the backend and real database */
+import logo from "./assets/EDUSENSE.svg";
+import { useNavigate } from "react-router-dom";
+
+/* TEMPORARY 
+ * TODO: Replace with real API calls 
+ * 
+ */
 
 export default function Login() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const [activeTab, setActiveTab] = useState("student"); 
+  const navigate = useNavigate();
+
+  const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (data) => {
-    const userData = JSON.parse(localStorage.getItem(data.email));
-    if (userData && userData.password === data.password) {
-      console.log(`${userData.name} You Are Successfully Logged In`);
+    if (activeTab === "student") {
+      navigate("/student-dashboard");
+    } else if (activeTab === "teacher") {
+      navigate("/teacher-dashboard");
     } else {
-      console.log("Email or Password is not matching with our record");
+      // temporary will change once we start connecting to backend
+      console.log("Sign up data:", data);
+      navigate("/student-dashboard"); // TEMPORARY
     }
+    reset();
   };
 
   return (
     <div className="relative flex h-screen w-screen items-center justify-center">
-      {/* Dot-grid Background */}
-      <div
-           className="absolute top-0 left-0 z-[-2] h-screen w-screen 
-           bg-[#0d1b2a] 
-           bg-[radial-gradient(#38bdf833_1px,#0d1b2a_1px)] 
-           bg-[size:20px_20px]"
-      ></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-[#496677]/80 to-[#F0EAD8] z-0"></div>
 
-      {/* Login Card */}
-      <div className="flex w-11/12 max-w-5xl h-[600px] bg-[#fdfaf3] rounded-xl shadow-2xl overflow-hidden">
-
-        {/* Left Side (Logo) */}
-        <div className="flex flex-1 bg-[#0d1b2a] justify-center items-center">
-          <img src={logo} alt="EduSense Logo" className="w-56" />
+      <div className="w-96 bg-white/50 backdrop-blur-lg rounded-2xl shadow-xl z-10 overflow-hidden">
+        <div className="flex justify-center py-6">
+          <img src={logo} alt="EduSense Logo" className="w-100" />
         </div>
 
-        {/* Right Side (Form) */}
-        <div className="flex flex-2 flex-col justify-center p-12 bg-gray-50">
-          <h2 className="text-3xl font-bold text-[#0d1b2a] mb-2">Welcome to EduSense</h2>
-          <p className="mb-6 text-gray-600">Log into your account</p>
+        {/* Tabs */}
+        <div className="flex px-6 mb-6 gap-2">
+          <button
+            onClick={() => setActiveTab("student")}
+            type="button"
+            className={`flex-1 py-2 font-semibold rounded-full transition-all ${
+              activeTab === "student"
+                ? "bg-[#F0EAD8]/80 text-[#4a3f35] shadow-md hover:bg-[#F0EAD8]/90"
+                : "border border-gray-300 text-gray-700 bg-transparent hover:bg-gray-100"
+            }`}
+          >
+            Student
+          </button>
+          <button
+            onClick={() => setActiveTab("teacher")}
+            type="button"
+            className={`flex-1 py-2 font-semibold rounded-full transition-all ${
+              activeTab === "teacher"
+                ? "bg-[#F0EAD8]/80 text-[#4a3f35] shadow-md hover:bg-[#F0EAD8]/90"
+                : "border border-gray-300 text-gray-700 bg-transparent hover:bg-gray-100"
+            }`}
+          >
+            Teacher
+          </button>
+          <button
+            onClick={() => setActiveTab("signup")}
+            type="button"
+            className={`flex-1 py-2 font-semibold rounded-full transition-all ${
+              activeTab === "signup"
+                ? "bg-[#F0EAD8]/80 text-[#4a3f35] shadow-md hover:bg-[#F0EAD8]/90"
+                : "border border-gray-300 text-gray-700 bg-transparent hover:bg-gray-100"
+            }`}
+          >
+            Sign Up
+          </button>
+        </div>
 
-          <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        {/* Form */}
+        <form className="flex flex-col px-6 pb-6" onSubmit={handleSubmit(onSubmit)}>
+          {activeTab === "signup" && (
             <input
-              type="email"
-              {...register("email", { required: true })}
-              placeholder="Email"
-              className="p-3 mb-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#0d1b2a]"
+              type="text"
+              placeholder="Username"
+              {...register("username")}
+              className="p-3 mb-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#F0EAD8]"
             />
-            {errors.email && <span className="text-red-500 text-sm">*Email is required</span>}
+          )}
+          <input
+            type="email"
+            placeholder="Email"
+            {...register("email")}
+            className="p-3 mb-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#F0EAD8]"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            {...register("password")}
+            className="p-3 mb-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-[#F0EAD8]"
+          />
 
-            <input
-              type="password"
-              {...register("password", { required: true })}
-              placeholder="Password"
-              className="p-3 mb-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#0d1b2a]"
-            />
-            {errors.password && <span className="text-red-500 text-sm">*Password is required</span>}
+          <button
+            type="submit"
+            className="w-full p-3 mt-2 rounded-full font-semibold text-[#4a3f35] bg-[#F0EAD8]/80 shadow-md hover:bg-[#F0EAD8]/90 transition-all"
+          >
+            {activeTab === "signup"
+              ? "Create Account"
+              : "Continue"}
+          </button>
+        </form>
 
-            <button
-              type="submit"
-              className="p-3 mt-4 bg-[#0d1b2a] text-white rounded-md font-semibold hover:bg-[#1b263b] transition-colors"
+        {activeTab !== "signup" && (
+          <div className="mb-4 text-center">
+            <a
+              href="/forgot-password"
+              className="text-sm text-[#4a3f35] hover:underline"
             >
-              Log In
-            </button>
-          </form>
-        </div>
+              Forgot your password?
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );

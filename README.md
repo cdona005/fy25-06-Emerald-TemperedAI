@@ -1,16 +1,26 @@
-# React + Vite
+## EduSense Frontend (STILL IN PROGRESS)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## WHATS WORKING NOW
+- A login page with three tabs
+- Student
+- Teacher
+- Sign Up
 
-Currently, two official plugins are available:
+## Navigation is set up using React Router:
+- / = Login Page
+- /student-dashboard = Student dashboard placeholder 
+- /teacher-dashboard = Teacher dashboard placeholder
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## IMPORTANT FILES 
 
-## React Compiler
+- App.jsx = Handles routes (login, student dashboard, teacher dashboard).
+- Login.jsx = Main login page with Student/Teacher/Sign Up tabs.
+- StudentDashboard.jsx = Placeholder for the student’s view.
+- TeacherDashboard.jsx = Placeholder for the teacher’s view.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
 
-## Expanding the ESLint configuration
+## RUNNING THE PROJECT
+- npm install
+- npm run dev
+-  http://localhost:5173
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
