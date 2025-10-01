@@ -1,5 +1,33 @@
 ## EduSense Frontend (STILL IN PROGRESS)
 
+## RUNNING THE PROJECT
+
+- npm install (install dependencies)
+- npm run dev (start dev server)
+-  http://localhost:5173
+
+
+## Tech Stack/ADD ONS
+React + Vite (with Vite for development server and bundling)
+React Router 
+Tailwind CSS (styling) 
+React Hook Form 
+
+## Resources Used:
+- React + Vite
+ https://react.dev/
+ https://youtu.be/do62-z3z6FM
+ https://youtu.be/VAeRhmpcWEQ
+
+
+- Tailwind Design
+ https://youtu.be/ft30zcMlFao
+ https://tailwindcss.com/docs/box-sizing
+
+- React Hook Form
+ https://youtu.be/5B3f4I98kHs
+
+
 ## WHATS WORKING NOW
 - A login page with three tabs
 - Student
@@ -19,8 +47,8 @@
 - TeacherDashboard.jsx = Placeholder for the teacher’s view.
 
 
-## RUNNING THE PROJECT
-- npm install
-- npm run dev
--  http://localhost:5173
+
+
+
+
 

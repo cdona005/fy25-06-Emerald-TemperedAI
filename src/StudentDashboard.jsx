@@ -1,3 +1,202 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+/**
+ * Purpose: Provides the main dashboard interface for students.
+ * 
+ * Features:
+ * - Course and Assignment selectors (static for now)
+ * - Simple chat box for asking questions (does not connect to backend yet)
+ * - Chat history sidebar (placeholder for now)
+ * - Logout button to return to login screen
+ * 
+ * 
+ * Notes for future: 
+ * - Course and assignment data will eventually come from the backend
+ * - Chat box function will connect to our LLM API instead of staying local
+ * - Authentication integration still needs to be added
+ *
+ */
+
+
+
+
 export default function StudentDashboard() {
-  return <h1>Student Dashboard</h1>;
+  const [chat, setChat] = useState([]);
+  const [userInput, setUserInput] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedAssignment, setSelectedAssignment] = useState("");
+  const navigate = useNavigate();
+
+  const sendPrompt = () => {
+    if (!userInput.trim()) return;
+
+    const newMessage = {
+      sender: "student",
+      text: userInput,
+      time: new Date().toLocaleTimeString(),
+    };
+
+    setChat([...chat, newMessage]);
+    setUserInput("");
+  };
+  // Clear chat and go back to login screen
+  const handleLogout = () => {
+    setChat([]);
+    navigate("/");
+  };
+
+  return (
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-[#496677]/80 to-[#F0EAD8]">
+      {/* Floating Card */}
+      <div className="flex w-11/12 h-5/6 rounded-2xl shadow-xl overflow-hidden bg-white/70 backdrop-blur-md">
+        
+       
+       
+       
+        {/* Sidebar */}
+        <div className="w-64 border-r p-4 flex flex-col gap-6">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-xl font-bold">EduSense</h1>
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1 border rounded-md hover:bg-gray-100 text-sm"
+            >
+              Logout
+            </button>
+          </div>
+
+          {/* Chat History: For layout purposes for now*/}
+          <h3 className="font-semibold mb-2">Chat History</h3>
+          <ul className="space-y-1 text-sm text-gray-700">
+            <li className="border rounded px-2 py-1 hover:bg-gray-100 cursor-pointer">
+              History 1
+            </li>
+            <li className="border rounded px-2 py-1 hover:bg-gray-100 cursor-pointer">
+              History 2
+            </li>
+            <li className="border rounded px-2 py-1 hover:bg-gray-100 cursor-pointer">
+              History 3
+            </li>
+              <li className="border rounded px-2 py-1 hover:bg-gray-100 cursor-pointer">
+              History 4
+            </li>
+              <li className="border rounded px-2 py-1 hover:bg-gray-100 cursor-pointer">
+              History 5
+            </li>
+          </ul>
+        </div>
+
+       
+       
+        {/* Chat + Course/Assignment Area */}
+        <div className="flex-1 flex flex-col">
+         
+         
+         
+         
+          {/* Course & Assignment Selector */}
+          <div className="p-4 border-b flex flex-col items-center gap-3">
+            <div className="flex gap-6">
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Select Course
+                </label>
+                <select
+                  className="border rounded-md px-3 py-2"
+                  value={selectedCourse}
+                  onChange={(e) => setSelectedCourse(e.target.value)}
+                >
+                    {/** This will change based off of students credientials, for demo purposes I used these options*/}
+                  <option value="">Choose a course</option>
+                  <option value="CS252 INTRO TO UNIX FOR PROGRAMMERS">CS252 INTRO TO UNIX FOR PROGRAMMERS</option>
+                  <option value="CS 381 INTRO TO DISCRETE STRUCTURES">CS 381 INTRO TO DISCRETE STRUCTURES</option>
+                  <option value="STAT330 INTRO-PROBABILITY & STAT">STAT330 INTRO-PROBABILITY & STAT</option>
+                  <option value="CS463 CRYPTOGRAPHY FOR CYBERSECURITY">CS463 CRYPTOGRAPHY FOR CYBERSECURITY</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold mb-1">
+                  Select Assignment
+                </label>
+                <select
+                  className="border rounded-md px-3 py-2"
+                  value={selectedAssignment}
+                  onChange={(e) => setSelectedAssignment(e.target.value)}
+                >
+                  <option value="">Choose an assignment</option>
+                  <option value="Prototype 1">Prototype 1</option>
+                  <option value="CIQ journal">CIQ journal</option>
+                  <option value="ADTS: Working with Classes">ADTS: Working with Classes</option>
+                </select>
+              </div>
+            </div>
+
+          
+          
+          
+          
+            {/* Show current selection */}
+            {selectedCourse && selectedAssignment && (
+              <p className="text-gray-600 text-sm mt-2">
+                   Great choice! Lets get started on <span  className="font-semibold">{selectedCourse}</span>, {" "}
+
+                <span className="font-semibold">{selectedAssignment}</span>
+              </p>
+            )}
+          </div>
+
+        
+        
+        
+        
+          {/* Chat Messages */}
+          <div className="flex-1 p-6 overflow-y-auto">
+            {chat.length === 0 ? (
+              <p className="text-center text-gray-500 mt-1.00">
+                <h1>Welcome back!
+                    Select the course and assignment you want to work on today! </h1>
+            
+              </p>
+            ) : (
+              chat.map((msg, i) => (
+                <div
+                  key={i}
+                  className={`mb-4 ${
+                    msg.sender === "student" ? "text-right" : "text-left"
+                  }`}
+                >
+                  <div className="inline-block bg-white border rounded-lg px-4 py-2 shadow-sm">
+                    <p>{msg.text}</p>
+                    <p className="text-xs text-gray-500 mt-1">{msg.time}</p>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+         
+         
+         
+          {/* Input */}
+          <div className="p-4 border-t flex">
+            <input
+              type="text"
+              className="flex-1 border rounded-md px-3 py-2"
+              placeholder="Ask a question..."
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+            />
+            <button
+              onClick={sendPrompt}
+              className="ml-2 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300"
+            >
+              ➤
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
